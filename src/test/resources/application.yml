@@ -1,0 +1,6 @@
+res:
+  file-name: testQuestionnaire.csv
+  line-separator: ','
+
+check:
+  minimum-acceptable-correct-answers-count: 4

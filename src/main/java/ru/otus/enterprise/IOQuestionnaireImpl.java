@@ -1,15 +1,19 @@
 package ru.otus.enterprise;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.otus.config.ApplicationCheckConfig;
+import ru.otus.config.ApplicationSourceConfig;
 import ru.otus.dao.entity.Quest;
 
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Service
+@RequiredArgsConstructor
 public class IOQuestionnaireImpl implements InputQuestionnaire, OutputQuestionnaire {
 
-    private static final int MINIMUM_ACCEPTABLE_CORRECT_ANSWERS_COUNT = 4;
+    private final ApplicationCheckConfig applicationCheckConfig;
 
     @Override
     public String getUserInput() {
@@ -46,7 +50,7 @@ public class IOQuestionnaireImpl implements InputQuestionnaire, OutputQuestionna
     public void printOutputMessage(String studentName, int rightAnswersCount) {
         outputString("End of testing!\nCount of your right answers = " + rightAnswersCount);
 
-        if (rightAnswersCount < MINIMUM_ACCEPTABLE_CORRECT_ANSWERS_COUNT) {
+        if (rightAnswersCount < applicationCheckConfig.getMinimumAcceptableCorrectAnswersCount()) {
             outputString(studentName + ", you are {Balbes Men}! Go and study {MatChast}! 0_o");
         } else {
             outputString(studentName + ", you are {Chetkiy Patcanchik}! Keep it up!!!!");

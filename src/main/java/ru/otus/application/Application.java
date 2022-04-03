@@ -3,6 +3,7 @@ package ru.otus.application;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.otus.AnswerType;
+import ru.otus.config.ApplicationSourceConfig;
 import ru.otus.dao.entity.Quest;
 import ru.otus.dao.repository.QuestRepository;
 import ru.otus.enterprise.InputQuestionnaire;
@@ -18,14 +19,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 @RequiredArgsConstructor
 public class Application {
 
-    private static final String RESOURCE_FILE_NAME = "questionnaire.csv";
-    private static final String LINE_SEPARATOR = ",";
-
     private final QuestRepository questRepository;
     private final QuestionnaireService questionnaireService;
     private final OutputQuestionnaire outputQuestionnaire;
     private final InputQuestionnaire inputQuestionnaire;
     private final IntermediateMessageService intermediateMessageService;
+    private final ApplicationSourceConfig applicationSourceConfig;
 
     public void studentSurvey() {
         String studentName = outputQuestionnaire.greeting();
@@ -34,7 +33,8 @@ public class Application {
     }
 
     private int processQuestionnaire() {
-        List<Quest> questionnaire = questRepository.getQuestionnaire(RESOURCE_FILE_NAME, LINE_SEPARATOR);
+        List<Quest> questionnaire = questRepository.getQuestionnaire(applicationSourceConfig.getFileName(),
+                applicationSourceConfig.getLineSeparator());
         AtomicInteger rightAnswerCount = new AtomicInteger();
 
         questionnaire.forEach(quest -> processQuest(rightAnswerCount, quest));
