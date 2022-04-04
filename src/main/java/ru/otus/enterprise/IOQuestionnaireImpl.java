@@ -1,11 +1,13 @@
 package ru.otus.enterprise;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import ru.otus.config.ApplicationCheckConfig;
 import ru.otus.config.ApplicationSourceConfig;
 import ru.otus.dao.entity.Quest;
 
+import java.util.Locale;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -15,6 +17,8 @@ public class IOQuestionnaireImpl implements InputQuestionnaire, OutputQuestionna
 
     private final ApplicationCheckConfig applicationCheckConfig;
 
+    private final MessageSource messageSource;
+
     @Override
     public String getUserInput() {
         Scanner sc = new Scanner(System.in);
@@ -23,16 +27,17 @@ public class IOQuestionnaireImpl implements InputQuestionnaire, OutputQuestionna
 
     @Override
     public String greeting() {
-        outputString("It's application for checking you erudition, premonition, foresight etc.");
-        outputString("Please introduce yourself: \n");
+
+        outputString(messageSource.getMessage("greeting.description",null,Locale.forLanguageTag("")));
+        outputString(messageSource.getMessage("greeting.introduce",null,Locale.forLanguageTag("")) + " \n");
 
         String userName = getUserInput();
 
-        outputString("\nHello, " + userName + "!\n");
-        outputString("Now it is necessary to check your erudition and foresight.");
-        outputString("After each question write the correct answer option number. From 1 till 4. " +
-                "\n(aside) For the particularly stupid...");
-        outputString("\nStart testing:");
+        outputString("\n" + messageSource.getMessage("greeting.hello",null,Locale.forLanguageTag("")) + ", "+ userName + "!\n");
+        outputString(messageSource.getMessage("greeting.nowNecessaryCheck",null,Locale.forLanguageTag("")));
+        outputString(messageSource.getMessage("greeting.manual",null,Locale.forLanguageTag("")) +
+                "\n" + messageSource.getMessage("greeting.manualAddidional",null,Locale.forLanguageTag("")));
+        outputString("\n" + messageSource.getMessage("greeting.startTesting",null,Locale.forLanguageTag("")) + ":");
 
         return userName;
     }

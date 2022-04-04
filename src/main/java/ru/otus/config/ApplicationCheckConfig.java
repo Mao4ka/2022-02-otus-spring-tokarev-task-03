@@ -8,7 +8,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.stereotype.Component;
 
 @ConfigurationProperties(prefix = "check")
-@EnableConfigurationProperties
 @Component
 @Getter
 @Setter

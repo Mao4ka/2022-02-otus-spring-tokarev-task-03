@@ -1,4 +1,6 @@
-res:
+spring.messages.basename: i18n/messages
+
+resourse:
   file-name: testQuestionnaire.csv
   line-separator: ','
 
