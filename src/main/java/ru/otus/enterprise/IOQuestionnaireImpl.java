@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.otus.config.ApplicationCheckConfig;
 import ru.otus.config.ApplicationSourceConfig;
 import ru.otus.dao.entity.Quest;
+import ru.otus.service.MessageService;
 
 import java.util.Locale;
 import java.util.Scanner;
@@ -19,6 +20,8 @@ public class IOQuestionnaireImpl implements InputQuestionnaire, OutputQuestionna
 
     private final MessageSource messageSource;
 
+    private final MessageService messageService;
+
     @Override
     public String getUserInput() {
         Scanner sc = new Scanner(System.in);
@@ -28,8 +31,8 @@ public class IOQuestionnaireImpl implements InputQuestionnaire, OutputQuestionna
     @Override
     public String greeting() {
 
-        outputString(messageSource.getMessage("greeting.description",null,Locale.forLanguageTag("")));
-        outputString(messageSource.getMessage("greeting.introduce",null,Locale.forLanguageTag("")) + " \n");
+        outputString(messageService.getMessage("greeting.description",Locale.forLanguageTag("")));
+        outputString(messageService.getMessageN("greeting.introduce",Locale.forLanguageTag("")));
 
         String userName = getUserInput();
 
