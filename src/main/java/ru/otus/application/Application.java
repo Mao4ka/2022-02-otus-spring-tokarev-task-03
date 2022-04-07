@@ -35,7 +35,7 @@ public class Application {
         applicationLocal = questionnaireService.getApplicationLocale(startApplication.defineLanguage());
         String studentName = startApplication.greeting(applicationLocal);
         int rightAnswersCount = processQuestionnaire();
-        outputQuestionnaire.printOutputMessage(studentName, rightAnswersCount);
+        outputQuestionnaire.printOutputMessage(studentName, rightAnswersCount, applicationLocal);
     }
 
     private int processQuestionnaire() {

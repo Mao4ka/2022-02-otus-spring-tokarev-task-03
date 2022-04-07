@@ -2,6 +2,8 @@ package ru.otus.enterprise;
 
 import ru.otus.dao.entity.Quest;
 
+import java.util.Locale;
+
 public interface OutputQuestionnaire {
 
     void printQuestionnaire(Quest quest);
@@ -10,5 +12,5 @@ public interface OutputQuestionnaire {
 
     void printString(String s);
 
-    void printOutputMessage(String studentName, int rightAnswersCount);
+    void printOutputMessage(String studentName, int rightAnswersCount, Locale messageLocale);
 }

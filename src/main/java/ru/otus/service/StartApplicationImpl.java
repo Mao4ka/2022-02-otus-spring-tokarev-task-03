@@ -1,8 +1,8 @@
 package ru.otus.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
+import ru.otus.config.ApplicationCheckConfig;
 import ru.otus.enterprise.InputQuestionnaire;
 import ru.otus.enterprise.OutputQuestionnaire;
 
@@ -16,7 +16,7 @@ public class StartApplicationImpl implements StartApplication {
 
     private final InputQuestionnaire inputQuestionnaire;
 
-    private final MessageSource messageSource;
+    private final ApplicationCheckConfig applicationCheckConfig;
 
     private final MessageService messageService;
 
@@ -34,15 +34,16 @@ public class StartApplicationImpl implements StartApplication {
     public String greeting(Locale messageLocale) {
 
         outputQuestionnaire.outputString(messageService.getNMessage("greeting.description", messageLocale));
-        outputQuestionnaire.outputString(messageService.getMessageN("greeting.introduce", messageLocale));
+        outputQuestionnaire.printString(messageService.getMessage("greeting.introduce", messageLocale));
 
         String userName = inputQuestionnaire.getUserInput();
 
         outputQuestionnaire.outputString(messageService.getNMessage("greeting.hello", messageLocale) + ", " + userName + "!\n");
         outputQuestionnaire.outputString(messageService.getMessage("greeting.nowNecessaryCheck", messageLocale));
-        outputQuestionnaire.outputString(messageService.getMessageN("greeting.manual", messageLocale) +
+        outputQuestionnaire.outputString(messageService.getMessage("greeting.manual", messageLocale) +
+                applicationCheckConfig.getMaximumCorrectOptionNumber() + "." +
                 messageService.getMessage("greeting.manualAddidional", messageLocale));
-        outputQuestionnaire.outputString(messageService.getMessage("greeting.startTesting", messageLocale) + ":");
+        outputQuestionnaire.outputString(messageService.getMessage("greeting.startTesting", messageLocale) + ":\n");
 
         return userName;
     }
