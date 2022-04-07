@@ -13,7 +13,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class QuestionnaireServiceImplTest {
 
-    private final QuestionnaireService questionnaireService = new QuestionnaireServiceImpl();
+    @Autowired
+    QuestionnaireService questionnaireService;
 
     @Test
     void getAnswerTypeWhenCorrectAnswer() {

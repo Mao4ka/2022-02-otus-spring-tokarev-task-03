@@ -10,8 +10,10 @@ import ru.otus.enterprise.InputQuestionnaire;
 import ru.otus.enterprise.OutputQuestionnaire;
 import ru.otus.enterprise.IntermediateMessageService;
 import ru.otus.service.QuestionnaireService;
+import ru.otus.service.StartApplication;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
@@ -19,15 +21,19 @@ import java.util.concurrent.atomic.AtomicInteger;
 @RequiredArgsConstructor
 public class Application {
 
+    public static Locale applicationLocal;
+
     private final QuestRepository questRepository;
     private final QuestionnaireService questionnaireService;
     private final OutputQuestionnaire outputQuestionnaire;
     private final InputQuestionnaire inputQuestionnaire;
     private final IntermediateMessageService intermediateMessageService;
     private final ApplicationSourceConfig applicationSourceConfig;
+    private final StartApplication startApplication;
 
     public void studentSurvey() {
-        String studentName = outputQuestionnaire.greeting();
+        applicationLocal = questionnaireService.getApplicationLocale(startApplication.defineLanguage());
+        String studentName = startApplication.greeting(applicationLocal);
         int rightAnswersCount = processQuestionnaire();
         outputQuestionnaire.printOutputMessage(studentName, rightAnswersCount);
     }

@@ -20,11 +20,11 @@ public class MessageService {
         return getMessage(messageCode, locale) + "\n" ;
     }
 
-    public String getNnessage(String messageCode, Locale locale) {
+    public String getNMessage(String messageCode, Locale locale) {
         return "\n" + getMessage(messageCode, locale);
     }
 
-    public String getNnessageN(String messageCode, Locale locale) {
+    public String getNMessageN(String messageCode, Locale locale) {
         return "\n" + getMessage(messageCode, locale) + "\n" ;
     }
 }

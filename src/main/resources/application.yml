@@ -6,3 +6,5 @@ resourse:
 
 check:
   minimum-acceptable-correct-answers-count: 4
+  # depends on the number of possible answers:
+  maximum-correct-option-number: 4

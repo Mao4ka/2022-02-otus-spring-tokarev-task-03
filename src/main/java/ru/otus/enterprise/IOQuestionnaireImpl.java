@@ -1,14 +1,10 @@
 package ru.otus.enterprise;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import ru.otus.config.ApplicationCheckConfig;
-import ru.otus.config.ApplicationSourceConfig;
 import ru.otus.dao.entity.Quest;
-import ru.otus.service.MessageService;
 
-import java.util.Locale;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -18,10 +14,6 @@ public class IOQuestionnaireImpl implements InputQuestionnaire, OutputQuestionna
 
     private final ApplicationCheckConfig applicationCheckConfig;
 
-    private final MessageSource messageSource;
-
-    private final MessageService messageService;
-
     @Override
     public String getUserInput() {
         Scanner sc = new Scanner(System.in);
@@ -29,25 +21,13 @@ public class IOQuestionnaireImpl implements InputQuestionnaire, OutputQuestionna
     }
 
     @Override
-    public String greeting() {
-
-        outputString(messageService.getMessage("greeting.description",Locale.forLanguageTag("")));
-        outputString(messageService.getMessageN("greeting.introduce",Locale.forLanguageTag("")));
-
-        String userName = getUserInput();
-
-        outputString("\n" + messageSource.getMessage("greeting.hello",null,Locale.forLanguageTag("")) + ", "+ userName + "!\n");
-        outputString(messageSource.getMessage("greeting.nowNecessaryCheck",null,Locale.forLanguageTag("")));
-        outputString(messageSource.getMessage("greeting.manual",null,Locale.forLanguageTag("")) +
-                "\n" + messageSource.getMessage("greeting.manualAddidional",null,Locale.forLanguageTag("")));
-        outputString("\n" + messageSource.getMessage("greeting.startTesting",null,Locale.forLanguageTag("")) + ":");
-
-        return userName;
+    public void outputString(String s) {
+        System.out.println(s);
     }
 
     @Override
-    public void outputString(String s) {
-        System.out.println(s);
+    public void printString(String s) {
+        System.out.print(s);
     }
 
     public void printQuestionnaire(Quest quest) {
@@ -74,6 +54,5 @@ public class IOQuestionnaireImpl implements InputQuestionnaire, OutputQuestionna
     private String addPrefix(String message) {
         return "\n    - " + message;
     }
-
 
 }
