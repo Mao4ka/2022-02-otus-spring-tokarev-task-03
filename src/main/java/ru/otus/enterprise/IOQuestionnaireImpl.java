@@ -44,11 +44,11 @@ public class IOQuestionnaireImpl implements InputQuestionnaire, OutputQuestionna
         outputString(messageService.getMessage("printOutputMessage.resultCount", messageLocale) + " = " + rightAnswersCount);
 
         if (rightAnswersCount < applicationCheckConfig.getMinimumAcceptableCorrectAnswersCount()) {
-            outputString(studentName + ", " + messageService.getMessageN("printOutputMessage.WhoAreYouNegative", messageLocale));
+            outputString(studentName + ", " + messageService.getMessage("printOutputMessage.WhoAreYouNegative", messageLocale));
             outputString(messageService.getMessage("printOutputMessage.resultConclusionNegative", messageLocale));
             outputString(messageService.getMessage("printOutputMessage.resultConclusionNegativeAdditional", messageLocale));
         } else {
-            outputString(studentName + ", " + messageService.getMessageN("printOutputMessage.WhoAreYouPositive", messageLocale));
+            outputString(studentName + ", " + messageService.getMessage("printOutputMessage.WhoAreYouPositive", messageLocale));
             outputString(messageService.getMessage("printOutputMessage.resultConclusionPositive1", messageLocale));
             outputString(messageService.getMessage("printOutputMessage.resultConclusionPositive2", messageLocale));
             outputString(messageService.getMessage("printOutputMessage.resultConclusionPositiveAdditional", messageLocale));

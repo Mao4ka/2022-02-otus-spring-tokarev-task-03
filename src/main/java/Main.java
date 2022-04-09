@@ -12,12 +12,6 @@ public class Main {
         ApplicationContext context = SpringApplication.run(Main.class, args);
         Application application = context.getBean(Application.class);
         application.studentSurvey();
-
-        //System.out.println(Locale.getDefault());
-
-//        Locale locale = new Locale("");
-//        //locale.
-//        Locale.
     }
 
 }

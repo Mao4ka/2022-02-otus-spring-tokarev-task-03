@@ -22,7 +22,7 @@ public class StartApplicationImpl implements StartApplication {
 
     @Override
     public String defineLanguage() {
-        outputQuestionnaire.printString("\nThis application works by default in English.\n" +
+        outputQuestionnaire.printString("\nThis application works in English by default.\n" +
                 "Do you want to take the test in Russian?\n" +
                 "If you want - press simbol \"1\", else - enter any other simbol.\n" +
                 "Your choice : ");

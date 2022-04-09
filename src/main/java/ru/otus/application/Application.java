@@ -55,7 +55,7 @@ public class Application {
         String userData = inputQuestionnaire.getUserInput();
 
         AnswerType answerType = questionnaireService.getAnswerType(quest, userData);
-        intermediateMessageService.commentUserAnswer(answerType);
+        intermediateMessageService.commentUserAnswer(answerType, applicationLocal);
         rightAnswerCount.addAndGet(answerType.equals(AnswerType.correctAnswer) ? 1 : 0);
     }
 

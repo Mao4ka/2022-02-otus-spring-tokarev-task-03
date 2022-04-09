@@ -3,6 +3,9 @@ package ru.otus.enterprise;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.otus.AnswerType;
+import ru.otus.service.MessageService;
+
+import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
@@ -10,20 +13,22 @@ public class IntermediateMessageServiceImpl implements IntermediateMessageServic
 
     private final OutputQuestionnaire outputQuestionnaire;
 
+    private final MessageService messageService;
+
     @Override
-    public void commentUserAnswer(AnswerType answerType) {
+    public void commentUserAnswer(AnswerType answerType, Locale messageLocale) {
         if (answerType.equals(AnswerType.correctAnswer)) {
-            outputQuestionnaire.outputString("To my great surprise, you were not mistaken. Strange...\n");
+            outputQuestionnaire.outputString(messageService.getMessageN("intermediate.correctAnswer", messageLocale));
         }
 
         if (answerType.equals(AnswerType.incorrectAnswer)) {
-            outputQuestionnaire.outputString("You're wrong! And I knew it!\n");
+            outputQuestionnaire.outputString(messageService.getMessageN("intermediate.incorrectAnswer", messageLocale));
         }
 
         if (answerType.equals(AnswerType.incorrectInputData)) {
-            outputQuestionnaire.outputString("Reed manual! And input CORRECT OPTION NUMBER!!!\n" +
-                    "This answer is not accepted!\n" +
-                    "(aside) Oh, these stupid students...\n");
+            outputQuestionnaire.outputString(messageService.getMessage("intermediate.incorrectInputData", messageLocale));
+            outputQuestionnaire.outputString(messageService.getMessage("intermediate.incorrectInputDataAdditing1", messageLocale));
+            outputQuestionnaire.outputString(messageService.getMessageN("intermediate.incorrectInputDataAdditing2", messageLocale));
         }
     }
 
