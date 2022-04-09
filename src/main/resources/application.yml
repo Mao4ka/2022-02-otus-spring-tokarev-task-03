@@ -1,0 +1,11 @@
+spring.messages.basename: i18n/messages
+
+resourse:
+  file-name: questionnaire.csv
+  file-name-ru: questionnaire_ru.csv
+  line-separator: ','
+
+check:
+  minimum-acceptable-correct-answers-count: 4
+  # depends on the number of possible answers:
+  maximum-correct-option-number: 4

@@ -3,38 +3,47 @@ package ru.otus.application;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.otus.AnswerType;
+import ru.otus.config.ApplicationSourceConfig;
 import ru.otus.dao.entity.Quest;
 import ru.otus.dao.repository.QuestRepository;
 import ru.otus.enterprise.InputQuestionnaire;
-import ru.otus.enterprise.OutputQuestionnaire;
 import ru.otus.enterprise.IntermediateMessageService;
+import ru.otus.enterprise.OutputQuestionnaire;
 import ru.otus.service.QuestionnaireService;
+import ru.otus.service.StartApplication;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
-
 
 @Service
 @RequiredArgsConstructor
 public class Application {
 
-    private static final String RESOURCE_FILE_NAME = "questionnaire.csv";
-    private static final String LINE_SEPARATOR = ",";
+    public static Locale applicationLocal;
 
     private final QuestRepository questRepository;
     private final QuestionnaireService questionnaireService;
     private final OutputQuestionnaire outputQuestionnaire;
     private final InputQuestionnaire inputQuestionnaire;
     private final IntermediateMessageService intermediateMessageService;
+    private final ApplicationSourceConfig applicationSourceConfig;
+    private final StartApplication startApplication;
 
     public void studentSurvey() {
-        String studentName = outputQuestionnaire.greeting();
-        int rightAnswersCount = processQuestionnaire();
-        outputQuestionnaire.printOutputMessage(studentName, rightAnswersCount);
+        String userLanguageChoiceSimbol = startApplication.defineLanguage();
+        applicationLocal = questionnaireService.getApplicationLocale(userLanguageChoiceSimbol);
+        String questionnaireFileName = questionnaireService.getFileName(userLanguageChoiceSimbol);
+
+        String studentName = startApplication.greeting(applicationLocal);
+
+        int rightAnswersCount = processQuestionnaire(questionnaireFileName);
+        outputQuestionnaire.printOutputMessage(studentName, rightAnswersCount, applicationLocal);
     }
 
-    private int processQuestionnaire() {
-        List<Quest> questionnaire = questRepository.getQuestionnaire(RESOURCE_FILE_NAME, LINE_SEPARATOR);
+    private int processQuestionnaire(String questionnaireFileName) {
+        List<Quest> questionnaire = questRepository.getQuestionnaire(questionnaireFileName,
+                applicationSourceConfig.getLineSeparator());
         AtomicInteger rightAnswerCount = new AtomicInteger();
 
         questionnaire.forEach(quest -> processQuest(rightAnswerCount, quest));
@@ -49,7 +58,7 @@ public class Application {
         String userData = inputQuestionnaire.getUserInput();
 
         AnswerType answerType = questionnaireService.getAnswerType(quest, userData);
-        intermediateMessageService.commentUserAnswer(answerType);
+        intermediateMessageService.commentUserAnswer(answerType, applicationLocal);
         rightAnswerCount.addAndGet(answerType.equals(AnswerType.correctAnswer) ? 1 : 0);
     }
 

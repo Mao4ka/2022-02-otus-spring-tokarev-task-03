@@ -3,11 +3,39 @@ package ru.otus.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.otus.AnswerType;
+import ru.otus.config.ApplicationCheckConfig;
+import ru.otus.config.ApplicationSourceConfig;
 import ru.otus.dao.entity.Quest;
+
+import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
 public class QuestionnaireServiceImpl implements QuestionnaireService {
+
+    private static final int MINIMUM_CORRECT_OPTION_NUMBER = 1;
+
+    private final ApplicationSourceConfig applicationSourceConfig;
+
+    private final ApplicationCheckConfig applicationCheckConfig;
+
+    @Override
+    public Locale getApplicationLocale(String userLanguageChoise) {
+        if ("1".equals(userLanguageChoise)) {
+            return new Locale("ru_RU");
+        } else {
+            return new Locale("");
+        }
+    }
+
+    @Override
+    public String getFileName(String userLanguageChoise) {
+        if ("1".equals(userLanguageChoise)) {
+            return applicationSourceConfig.getFileNameRu();
+        } else {
+            return applicationSourceConfig.getFileName();
+        }
+    }
 
     @Override
     public AnswerType getAnswerType(Quest quest, String userData) {
@@ -26,7 +54,7 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     private boolean checkCorrectInputData(String userData) {
         try {
             int intValue = Integer.parseInt(userData);
-            return intValue >= 1 && intValue <= 4;
+            return intValue >= MINIMUM_CORRECT_OPTION_NUMBER && intValue <= applicationCheckConfig.getMaximumCorrectOptionNumber();
         } catch (Exception e) {
             return false;
         }

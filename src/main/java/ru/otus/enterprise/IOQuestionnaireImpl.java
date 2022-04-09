@@ -1,15 +1,22 @@
 package ru.otus.enterprise;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.otus.config.ApplicationCheckConfig;
 import ru.otus.dao.entity.Quest;
+import ru.otus.service.MessageService;
 
+import java.util.Locale;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Service
+@RequiredArgsConstructor
 public class IOQuestionnaireImpl implements InputQuestionnaire, OutputQuestionnaire {
 
-    private static final int MINIMUM_ACCEPTABLE_CORRECT_ANSWERS_COUNT = 4;
+    private final ApplicationCheckConfig applicationCheckConfig;
+
+    private final MessageService messageService;
 
     @Override
     public String getUserInput() {
@@ -18,24 +25,13 @@ public class IOQuestionnaireImpl implements InputQuestionnaire, OutputQuestionna
     }
 
     @Override
-    public String greeting() {
-        outputString("It's application for checking you erudition, premonition, foresight etc.");
-        outputString("Please introduce yourself: \n");
-
-        String userName = getUserInput();
-
-        outputString("\nHello, " + userName + "!\n");
-        outputString("Now it is necessary to check your erudition and foresight.");
-        outputString("After each question write the correct answer option number. From 1 till 4. " +
-                "\n(aside) For the particularly stupid...");
-        outputString("\nStart testing:");
-
-        return userName;
+    public void outputString(String s) {
+        System.out.println(s);
     }
 
     @Override
-    public void outputString(String s) {
-        System.out.println(s);
+    public void printString(String s) {
+        System.out.print(s);
     }
 
     public void printQuestionnaire(Quest quest) {
@@ -43,16 +39,22 @@ public class IOQuestionnaireImpl implements InputQuestionnaire, OutputQuestionna
     }
 
     @Override
-    public void printOutputMessage(String studentName, int rightAnswersCount) {
-        outputString("End of testing!\nCount of your right answers = " + rightAnswersCount);
+    public void printOutputMessage(String studentName, int rightAnswersCount, Locale messageLocale) {
+        outputString(messageService.getMessageN("printOutputMessage.endOfTesting", messageLocale));
+        outputString(messageService.getMessage("printOutputMessage.resultCount", messageLocale) + " = " + rightAnswersCount);
 
-        if (rightAnswersCount < MINIMUM_ACCEPTABLE_CORRECT_ANSWERS_COUNT) {
-            outputString(studentName + ", you are {Balbes Men}! Go and study {MatChast}! 0_o");
+        if (rightAnswersCount < applicationCheckConfig.getMinimumAcceptableCorrectAnswersCount()) {
+            outputString(studentName + ", " + messageService.getMessage("printOutputMessage.WhoAreYouNegative", messageLocale));
+            outputString(messageService.getMessage("printOutputMessage.resultConclusionNegative", messageLocale));
+            outputString(messageService.getMessage("printOutputMessage.resultConclusionNegativeAdditional", messageLocale));
         } else {
-            outputString(studentName + ", you are {Chetkiy Patcanchik}! Keep it up!!!!");
+            outputString(studentName + ", " + messageService.getMessage("printOutputMessage.WhoAreYouPositive", messageLocale));
+            outputString(messageService.getMessage("printOutputMessage.resultConclusionPositive1", messageLocale));
+            outputString(messageService.getMessage("printOutputMessage.resultConclusionPositive2", messageLocale));
+            outputString(messageService.getMessage("printOutputMessage.resultConclusionPositiveAdditional", messageLocale));
         }
     }
-
+// printOutputMessage.WhoAreYouNegative
     private String createOutputMessage(Quest quest) {
         AtomicReference<String> outputMessage = new AtomicReference<>(quest.getQuestion());
         quest.getAnswers().forEach(answer -> outputMessage.set(outputMessage + addPrefix(answer)));
@@ -62,6 +64,5 @@ public class IOQuestionnaireImpl implements InputQuestionnaire, OutputQuestionna
     private String addPrefix(String message) {
         return "\n    - " + message;
     }
-
 
 }
