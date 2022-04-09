@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
 
-
 @Service
 @RequiredArgsConstructor
 public class Application {

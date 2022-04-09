@@ -1,9 +1,7 @@
 package ru.otus.repository;
 
-import org.assertj.core.internal.bytebuddy.implementation.bind.annotation.IgnoreForBinding;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import ru.otus.dao.entity.Quest;
 import ru.otus.dao.repository.QuestRepository;
 
