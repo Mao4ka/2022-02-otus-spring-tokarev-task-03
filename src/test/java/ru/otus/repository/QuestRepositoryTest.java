@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("В репозитории")
 class QuestRepositoryTest {
 
-    private static final String RESOURCE_FILE_NAME = "testQuestionnaire.csv";
+    private static final String RESOURCE_FILE_NAME = "test_questionnaire.csv";
     private static final String LINE_SEPARATOR = ",";
 
     private final QuestRepository questRepository = new QuestRepository();

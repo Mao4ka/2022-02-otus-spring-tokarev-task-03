@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class FileUtilsTest {
 
-    private static final String RESOURCE_FILE_NAME = "testQuestionnaire.csv";
+    private static final String RESOURCE_FILE_NAME = "test_questionnaire.csv";
     private static final String LINE_SEPARATOR = ",";
 
     @SneakyThrows

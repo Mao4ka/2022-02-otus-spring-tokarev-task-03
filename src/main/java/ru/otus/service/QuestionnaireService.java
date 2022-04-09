@@ -9,5 +9,7 @@ public interface QuestionnaireService {
 
     Locale getApplicationLocale(String userLanguageChoise);
 
+    String getFileName(String userLanguageChoise);
+
     AnswerType getAnswerType(Quest quest, String userData);
 }

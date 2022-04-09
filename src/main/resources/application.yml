@@ -2,6 +2,7 @@ spring.messages.basename: i18n/messages
 
 resourse:
   file-name: questionnaire.csv
+  file-name-ru: questionnaire_ru.csv
   line-separator: ','
 
 check:

@@ -7,8 +7,8 @@ import ru.otus.config.ApplicationSourceConfig;
 import ru.otus.dao.entity.Quest;
 import ru.otus.dao.repository.QuestRepository;
 import ru.otus.enterprise.InputQuestionnaire;
-import ru.otus.enterprise.OutputQuestionnaire;
 import ru.otus.enterprise.IntermediateMessageService;
+import ru.otus.enterprise.OutputQuestionnaire;
 import ru.otus.service.QuestionnaireService;
 import ru.otus.service.StartApplication;
 
@@ -31,14 +31,18 @@ public class Application {
     private final StartApplication startApplication;
 
     public void studentSurvey() {
-        applicationLocal = questionnaireService.getApplicationLocale(startApplication.defineLanguage());
+        String userLanguageChoiceSimbol = startApplication.defineLanguage();
+        applicationLocal = questionnaireService.getApplicationLocale(userLanguageChoiceSimbol);
+        String questionnaireFileName = questionnaireService.getFileName(userLanguageChoiceSimbol);
+
         String studentName = startApplication.greeting(applicationLocal);
-        int rightAnswersCount = processQuestionnaire();
+
+        int rightAnswersCount = processQuestionnaire(questionnaireFileName);
         outputQuestionnaire.printOutputMessage(studentName, rightAnswersCount, applicationLocal);
     }
 
-    private int processQuestionnaire() {
-        List<Quest> questionnaire = questRepository.getQuestionnaire(applicationSourceConfig.getFileName(),
+    private int processQuestionnaire(String questionnaireFileName) {
+        List<Quest> questionnaire = questRepository.getQuestionnaire(questionnaireFileName,
                 applicationSourceConfig.getLineSeparator());
         AtomicInteger rightAnswerCount = new AtomicInteger();
 

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 public class ApplicationSourceConfig {
 
     private String fileName;
+    private String fileNameRu;
     private String lineSeparator;
 
 }
